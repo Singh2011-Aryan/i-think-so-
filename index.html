@@ -233,17 +233,26 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js">
 
 function createAccount() {
-  const email = document.getElementById('newEmail').value;
-  const domainId = document.getElementById('newDomainId').value;
+  const email = document.getElementById('newEmail').value.trim();
+  const domainId = document.getElementById('newDomainId').value.trim();
   const lob = document.getElementById('lob').value;
-
   const subCheckboxes = document.querySelectorAll('input[name="subGroup"]:checked');
   const sub = Array.from(subCheckboxes).map(cb => cb.value).join(", ");
   const password = document.getElementById('newPassword').value;
   const confirm = document.getElementById('confirmPassword').value;
 
-  if (password !== confirm) return alert("Passwords do not match!");
-  if (!lob || !sub) return alert("Please select LOB and Sub.");
+  if (!email || !domainId || !lob || !password || !confirm) {
+    alert("All fields are required.");
+    return;
+  }
+  if (!sub) {
+    alert("Please select at least one sub option.");
+    return;
+  }
+  if (password !== confirm) {
+    alert("Passwords do not match.");
+    return;
+  }
 
   auth.createUserWithEmailAndPassword(email, password)
     .then((userCredential) => {
@@ -257,9 +266,12 @@ function createAccount() {
       toggleSection('login-container');
     })
     .catch((error) => {
+      console.error("Error creating account:", error);
       alert("Error: " + error.message);
     });
 }
+
+
 
 function login() {
   const domainId = document.getElementById('loginDomainId').value;
