@@ -272,7 +272,6 @@ function createAccount() {
 }
 
 
-
 function login() {
   const domainId = document.getElementById('loginDomainId').value;
   const password = document.getElementById('loginPassword').value;
@@ -280,15 +279,24 @@ function login() {
   // Find user email from domainId
   db.ref('users').once('value', snapshot => {
     const users = snapshot.val();
-    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId);
+    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId || user.email === domainId);
     if (!entry) return alert("Domain ID not found.");
     const [uid, user] = entry;
     auth.signInWithEmailAndPassword(user.email, password)
       .then(() => {
-        document.getElementById('email').value = user.email;
-        document.getElementById('domainId').value = user.domainId;
-        document.getElementById('department').value = user.lob;
-        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        userEmail = user.email;
+        userDomainId = user.domainId;
+        userDepartment = user.lob;
+
+        document.getElementById('email').value = userEmail;
+        document.getElementById('domainId').value = userDomainId;
+        document.getElementById('department').value = userDepartment;
+
+        document.getElementById('deptTitle').innerText = userDepartment + ' Department Data';
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        showSection('doubt');
+        attachDataListeners();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -368,15 +376,24 @@ function login() {
   // Find user email from domainId
   db.ref('users').once('value', snapshot => {
     const users = snapshot.val();
-    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId);
+    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId || user.email === domainId);
     if (!entry) return alert("Domain ID not found.");
     const [uid, user] = entry;
     auth.signInWithEmailAndPassword(user.email, password)
       .then(() => {
-        document.getElementById('email').value = user.email;
-        document.getElementById('domainId').value = user.domainId;
-        document.getElementById('department').value = user.lob;
-        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        userEmail = user.email;
+        userDomainId = user.domainId;
+        userDepartment = user.lob;
+
+        document.getElementById('email').value = userEmail;
+        document.getElementById('domainId').value = userDomainId;
+        document.getElementById('department').value = userDepartment;
+
+        document.getElementById('deptTitle').innerText = userDepartment + ' Department Data';
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        showSection('doubt');
+        attachDataListeners();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -456,15 +473,24 @@ function login() {
   // Find user email from domainId
   db.ref('users').once('value', snapshot => {
     const users = snapshot.val();
-    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId);
+    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId || user.email === domainId);
     if (!entry) return alert("Domain ID not found.");
     const [uid, user] = entry;
     auth.signInWithEmailAndPassword(user.email, password)
       .then(() => {
-        document.getElementById('email').value = user.email;
-        document.getElementById('domainId').value = user.domainId;
-        document.getElementById('department').value = user.lob;
-        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        userEmail = user.email;
+        userDomainId = user.domainId;
+        userDepartment = user.lob;
+
+        document.getElementById('email').value = userEmail;
+        document.getElementById('domainId').value = userDomainId;
+        document.getElementById('department').value = userDepartment;
+
+        document.getElementById('deptTitle').innerText = userDepartment + ' Department Data';
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        showSection('doubt');
+        attachDataListeners();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -557,15 +583,24 @@ function login() {
   // Find user email from domainId
   db.ref('users').once('value', snapshot => {
     const users = snapshot.val();
-    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId);
+    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId || user.email === domainId);
     if (!entry) return alert("Domain ID not found.");
     const [uid, user] = entry;
     auth.signInWithEmailAndPassword(user.email, password)
       .then(() => {
-        document.getElementById('email').value = user.email;
-        document.getElementById('domainId').value = user.domainId;
-        document.getElementById('department').value = user.lob;
-        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        userEmail = user.email;
+        userDomainId = user.domainId;
+        userDepartment = user.lob;
+
+        document.getElementById('email').value = userEmail;
+        document.getElementById('domainId').value = userDomainId;
+        document.getElementById('department').value = userDepartment;
+
+        document.getElementById('deptTitle').innerText = userDepartment + ' Department Data';
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        showSection('doubt');
+        attachDataListeners();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -631,7 +666,7 @@ function resetPassword() {
     <option value="National">National</option>
     <option value="West">West</option>
   </select>
-  <div id="sub-options" class="hidden"></div>
+<div id="sub-container" style="margin-top: 10px;"></div>
   <input type="password" id="newPassword" placeholder="Create Password" required>
   <input type="password" id="confirmPassword" placeholder="Re-enter Password" required>
   <button onclick="createAccount()">Save</button>
@@ -660,6 +695,8 @@ function resetPassword() {
     <option value="National">National</option>
     <option value="West">West</option>
   </select>
+<div id="sub-container" style="margin-top: 10px;"></div>
+
   <button type="submit">Login</button>
 </form>
 
@@ -754,15 +791,24 @@ function login() {
   // Find user email from domainId
   db.ref('users').once('value', snapshot => {
     const users = snapshot.val();
-    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId);
+    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId || user.email === domainId);
     if (!entry) return alert("Domain ID not found.");
     const [uid, user] = entry;
     auth.signInWithEmailAndPassword(user.email, password)
       .then(() => {
-        document.getElementById('email').value = user.email;
-        document.getElementById('domainId').value = user.domainId;
-        document.getElementById('department').value = user.lob;
-        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        userEmail = user.email;
+        userDomainId = user.domainId;
+        userDepartment = user.lob;
+
+        document.getElementById('email').value = userEmail;
+        document.getElementById('domainId').value = userDomainId;
+        document.getElementById('department').value = userDepartment;
+
+        document.getElementById('deptTitle').innerText = userDepartment + ' Department Data';
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        showSection('doubt');
+        attachDataListeners();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -858,16 +904,7 @@ updatePopupBadge();
 
     });
 
-    window.showSection = function (section) {
-      let contentArea = document.getElementById('content-area');
-      if (section === 'doubt') {
-        contentArea.innerHTML = `
-          <h3>Submit Doubt</h3>
-          <label>Field:</label><select id='field'><option>Timely filling</option><option>General Inquiry</option><option>No Sccf</option><option>Pricing issue</option><option>High Dollar</option><option>Others</option></select>
-          <label>Doubt Number:</label><input id='doubtNumber' required>
-          <label>Attachment Number:</label><input id='attachmentNumber'>
-          <label>Description:</label><textarea id='doubtDesc'></textarea>
-          <label>Select Email:</label><select id='emailSelect'>${emailOptions.map(e => `<option>${e}</option>`).join('')}</select>
+    </option>`).join('')}</select>
           <button onclick='submitDoubt()'>Submit</button>
         `;
       } else if (section === 'resolved') {
@@ -1186,15 +1223,24 @@ function login() {
   // Find user email from domainId
   db.ref('users').once('value', snapshot => {
     const users = snapshot.val();
-    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId);
+    const entry = Object.entries(users || {}).find(([uid, user]) => user.domainId === domainId || user.email === domainId);
     if (!entry) return alert("Domain ID not found.");
     const [uid, user] = entry;
     auth.signInWithEmailAndPassword(user.email, password)
       .then(() => {
-        document.getElementById('email').value = user.email;
-        document.getElementById('domainId').value = user.domainId;
-        document.getElementById('department').value = user.lob;
-        document.getElementById('loginForm').dispatchEvent(new Event('submit'));
+        userEmail = user.email;
+        userDomainId = user.domainId;
+        userDepartment = user.lob;
+
+        document.getElementById('email').value = userEmail;
+        document.getElementById('domainId').value = userDomainId;
+        document.getElementById('department').value = userDepartment;
+
+        document.getElementById('deptTitle').innerText = userDepartment + ' Department Data';
+        document.getElementById('login-container').classList.add('hidden');
+        document.getElementById('dashboard').classList.remove('hidden');
+        showSection('doubt');
+        attachDataListeners();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -1485,5 +1531,178 @@ window.updatePopupBadge = updatePopupBadge;
 
 </script>
 
+
+<script>
+function toggleSection(idToShow) {
+  const sections = ['login-container', 'create-container', 'forgot-container'];
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.classList.add('hidden');
+  });
+  const target = document.getElementById(idToShow);
+  if (target) target.classList.remove('hidden');
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Button navigation
+  document.getElementById("createAccountBtn")?.addEventListener("click", () => {
+    toggleSection("create-account-container");
+  });
+  document.getElementById("showResetBtn")?.addEventListener("click", () => {
+    toggleSection("reset-container");
+  });
+  document.getElementById("backToLoginBtn")?.addEventListener("click", () => {
+    toggleSection("login-container");
+  });
+  document.getElementById("backToLoginFromReset")?.addEventListener("click", () => {
+    toggleSection("login-container");
+  });
+
+  // LOB → SUB dynamic logic
+  const lobSelect = document.getElementById("lob");
+  const subContainer = document.getElementById("sub-container");
+  const options = {
+    Host: ["Not Admitted", "Consent Form", "Billing Issue"],
+    "Benefit Issue": ["Benefit Not Applied", "Service Excluded"],
+    "Authorization Issue": ["Authorization Delayed", "Wrong CPT Code"]
+  };
+
+  lobSelect?.addEventListener("change", function () {
+    const subs = options[this.value] || [];
+    subContainer.innerHTML = "";
+    subs.forEach(sub => {
+      const label = document.createElement("label");
+      label.style.display = "block";
+      label.innerHTML = `<input type="checkbox" name="subGroup" value="${sub}"> ${sub}`;
+      subContainer.appendChild(label);
+    });
+  });
+
+  // Create account submit → redirect to login
+  const saveBtn = document.querySelector("#create-account-container button[type='submit']");
+  saveBtn?.addEventListener("click", (e) => {
+    e.preventDefault();
+    alert("Account created!");
+    toggleSection("login-container");
+  });
+});
+</script>
+
+
+
+
 </body>
 </html>
+
+
+<script>
+</script>
+
+<script>
+window.showSection = function (section) {
+  const contentArea = document.getElementById('content-area');
+  if (!contentArea) return;
+  contentArea.dataset.currentSection = section;
+
+  if (section === 'doubt') {
+    contentArea.innerHTML = `
+      <h3>Submit Doubt</h3>
+      <label>Field:</label><select id='field'>
+        <option>Timely filling</option>
+        <option>General Inquiry</option>
+        <option>No Sccf</option>
+        <option>Pricing issue</option>
+        <option>High Dollar</option>
+        <option>Others</option>
+      </select>
+      <label>Doubt Number:</label><input id='doubtNumber' required>
+      <label>Attachment Number:</label><input id='attachmentNumber'>
+      <label>Description:</label><textarea id='doubtDesc'></textarea>
+      <label>Select Email:</label><select id='emailSelect'>${['user1@example.com', 'user2@example.com'].map(e => `<option>${e}</option>`).join('')}</select>
+      <button onclick='submitDoubt()'>Submit</button>
+    `;
+  } else if (section === 'resolved') {
+    contentArea.innerHTML = '<h3>Resolved Doubts</h3>' + generateResolvedTable();
+  } else if (section === 'mydoubt') {
+    const myDoubts = doughts.filter(d => d.domainId === userDomainId);
+    let html = '<h3>My Doubts</h3>' + myDoubts.map(d =>
+      `${d.doubtNumber} - ${d.status === 'resolved' ? 'Resolved: ' + d.resolvedComment : 'Under Review'} 
+       <button onclick='viewDoubt("${d.doubtNumber}")'>View</button>`
+    ).join('<br>');
+    contentArea.innerHTML = html;
+  } else if (section === 'query') {
+    const emailOptions = ['user1@example.com', 'user2@example.com'];
+    if (emailOptions.includes(userEmail)) {
+      const assigned = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending');
+      contentArea.innerHTML = '<h3>Query to Answer</h3>' + assigned.map((d, index) => `
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+          <strong>${d.domainId}</strong> | Doubt No: ${d.doubtNumber}<br>
+          Attachment No: ${d.attachmentNumber}<br>
+          Description: ${d.description}<br>
+          <button onclick="showResolveForm(${index})">Resolve</button>
+          <div id="resolveForm${index}" style="display:none; margin-top:10px;">
+            <label>Decision (max 15 words):</label><input id="decision${index}" maxlength="200">
+            <label>Resolved Comment:</label><textarea id="comment${index}"></textarea>
+            <label>Select Departments to Notify:</label>
+            <div class="checkbox-row" style="display: flex; flex-direction: row; gap: 15px; flex-wrap: wrap;">
+              ${getSubDepartmentCheckboxes(userDomainId, index)}
+            </div>
+            <button onclick="resolveDoubt(${index})">Resolved</button>
+            <button onclick="cancelResolve(${index})">Cancel</button>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      contentArea.innerHTML = '<h3>Access Denied</h3>';
+    }
+  }
+}
+</script>
+
+<script>
+window.generateResolvedTable = function() {
+  let html = `
+    <div style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; margin-bottom: 15px;">
+      <div>
+        <label>Field:</label>
+        <select id="resolvedFilter" onchange="filterResolvedTable()">
+          <option value="All">All</option>
+          <option value="Timely filling">Timely filling</option>
+          <option value="General Inquiry">General Inquiry</option>
+          <option value="No Sccf">No Sccf</option>
+          <option value="Pricing issue">Pricing issue</option>
+          <option value="High Dollar">High Dollar</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
+      <div>
+        <label>Domain ID:</label>
+        <input type="text" id="searchDomainId" oninput="filterResolvedTable()" placeholder="Search...">
+      </div>
+      <div>
+        <label>Doubt No:</label>
+        <input type="text" id="searchDoubtNo" oninput="filterResolvedTable()" placeholder="Search...">
+      </div>
+      <div>
+        <label>Description:</label>
+        <input type="text" id="searchDescription" oninput="filterResolvedTable()" placeholder="Search...">
+      </div>
+    </div>
+  `;
+
+  html += '<table id="resolvedTable"><tr><th>Field</th><th>Domain ID</th><th>Doubt No</th><th>Attachment No</th><th>Description</th><th>Resolved Comment</th><th>Action</th></tr>';
+  for (const [index, d] of resolvedDoughts.entries()) {
+    if (d.department.split(',').map(dep => dep.trim()).includes(userDepartment)) {
+      html += `<tr data-field="${d.field || 'General'}">
+        <td>${d.field || 'General'}</td><td>${d.domainId}</td><td>${d.doubtNumber}</td><td>${d.attachmentNumber}</td><td>${d.description}</td><td>${d.resolvedComment}</td>
+        <td><button onclick="viewResolved(${index})">View</button></td></tr>`;
+    }
+  }
+  html += '</table>';
+  return html;
+}
+
+window.logout = function () {
+  location.reload(); // simple page reload to return to login screen
+}
+</script>
