@@ -875,7 +875,7 @@ let userEmail = '', userDomainId = '', userDepartment = '';
 let popupMessages = [], unreadPopups = [], readPopups = [];
 
 document.addEventListener('DOMContentLoaded', function () {
-  const emailOptions = ['user1@example.com', 'user2@example.com'];
+  const emailOptions = ['user1@example.com', 'user2@example.com','aryan@gmail.com'];
   const doughts = [], resolvedDoughts = [];
 
     const storedDoubts = localStorage.getItem('doubts');
@@ -931,7 +931,8 @@ updatePopupBadge();
                 <label>Select Departments to Notify:</label>
 <div class="checkbox-row" style="display: flex; flex-direction: row; gap: 15px; flex-wrap: wrap;">
   ${getSubDepartmentCheckboxes(userDomainId, index)}
-</div>                <button onclick="resolveDoubt(${index})">Resolved</button>
+</div>        
+        <button onclick="resolveDoubt(${index})">Resolved</button>
                 <button onclick="cancelResolve(${index})">Cancel</button>
               </div>
             </div>
@@ -1618,7 +1619,7 @@ window.showSection = function (section) {
       <label>Doubt Number:</label><input id='doubtNumber' required>
       <label>Attachment Number:</label><input id='attachmentNumber'>
       <label>Description:</label><textarea id='doubtDesc'></textarea>
-      <label>Select Email:</label><select id='emailSelect'>${['user1@example.com', 'user2@example.com'].map(e => `<option>${e}</option>`).join('')}</select>
+      <label>Select Email:</label><select id='emailSelect'>${['user1@example.com', 'user2@example.com','aryan@gmail.com'].map(e => `<option>${e}</option>`).join('')}</select>
       <button onclick='submitDoubt()'>Submit</button>
     `;
   } else if (section === 'resolved') {
@@ -1631,7 +1632,6 @@ window.showSection = function (section) {
     ).join('<br>');
     contentArea.innerHTML = html;
   } else if (section === 'query') {
-    const emailOptions = ['user1@example.com', 'user2@example.com'];
     if (emailOptions.includes(userEmail)) {
       const assigned = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending');
       contentArea.innerHTML = '<h3>Query to Answer</h3>' + assigned.map((d, index) => `
