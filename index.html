@@ -645,7 +645,10 @@ function viewPopupDetail(type, index) {
 
 </script>
 <!-- Firebase SDK Scripts -->
-
+<!-- Firebase App (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<!-- Firebase Realtime Database (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
 
 <script>
   const firebaseConfig = {
@@ -673,15 +676,10 @@ window.firebaseRef = (dbInstance, path) => dbInstance.ref(path);
 </script>
 
 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+  import { getDatabase, ref, get, set, update, onValue, child } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js";
 
-
-
-<!-- Firebase App (compat) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<!-- Firebase Realtime Database (compat) -->
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-
-<script>
   const firebaseConfig = {
     apiKey: "AIzaSyC39907gs4-iS9S9Xqu3U0OTvXj1zkszNc",
     authDomain: "doubt-tracker-d6155.firebaseapp.com",
@@ -692,18 +690,54 @@ window.firebaseRef = (dbInstance, path) => dbInstance.ref(path);
     appId: "1:588982128574:web:4007d05eefc5b0dd17f3ef"
   };
 
-  // Initialize Firebase
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.database();
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+document.addEventListener('DOMContentLoaded', () => {
+  window.login = login;
+  window.toggleSection = toggleSection;
+  window.updateSubDropdown = updateSubDropdown;
+  window.createAccount = createAccount;
+  window.sendTempPassword = sendTempPassword;
+  window.resetPassword = resetPassword;
+  window.showSection = showSection;
+  window.submitDoubt = submitDoubt;
+  window.viewDoubt = viewDoubt;
+  window.viewResolved = viewResolved;
+  window.filterResolvedTable = filterResolvedTable;
+  window.showResolveForm = showResolveForm;
+  window.cancelResolve = cancelResolve;
+  window.resolveDoubt = resolveDoubt;
+  window.showPopupPage = showPopupPage;
+  window.viewPopupDetail = viewPopupDetail;
+  window.markAllRead = markAllRead;
+  window.logout = logout;
+});
 
-  // Make Firebase functions globally accessible
+
   window.firebaseDB = db;
-  window.firebaseRef = (dbInstance, path) => dbInstance.ref(path);
-  window.firebaseSet = (ref, val) => ref.set(val);
-  window.firebaseGet = (ref) => ref.get();
-  window.firebaseChild = (ref, path) => ref.child(path);
-  window.firebaseUpdate = (ref, val) => ref.update(val);
-  window.firebaseOnValue = (ref, fn) => ref.on('value', fn);
+  window.firebaseRef = (dbInstance, path) => ref(dbInstance, path);
+  window.firebaseSet = (refObj, val) => set(refObj, val);
+  window.firebaseGet = (refObj) => get(refObj);
+  window.firebaseChild = (refObj, subPath) => child(refObj, subPath);
+  window.firebaseUpdate = (refObj, val) => update(refObj, val);
+  window.firebaseOnValue = (refObj, fn) => onValue(refObj, fn);
+</script>
+
+
+<script>
+// Ensure all dashboard functions are globally accessible
+window.showSection = showSection;
+window.logout = logout;
+window.showPopupPage = showPopupPage;
+window.viewPopupDetail = viewPopupDetail;
+window.markAllRead = markAllRead;
+window.submitDoubt = submitDoubt;
+window.viewDoubt = viewDoubt;
+window.viewResolved = viewResolved;
+window.showResolveForm = showResolveForm;
+window.cancelResolve = cancelResolve;
+window.resolveDoubt = resolveDoubt;
+window.filterResolvedTable = filterResolvedTable;
 </script>
 
 </body>
