@@ -241,6 +241,7 @@ function login() {
         userEmail = user.email.trim().toLowerCase();
         userDomainId = user.domainId;
         userDepartment = user.lob;
+        userSubGroups = (user.sub || '').split(',').map(s => s.trim());
 
         document.getElementById('email').value = userEmail;
         document.getElementById('domainId').value = userDomainId;
@@ -251,6 +252,7 @@ function login() {
         document.getElementById('dashboard').classList.remove('hidden');
         showSection('doubt');
         attachDataListeners();
+        updateQueryToAnswerBadge();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -339,6 +341,7 @@ function login() {
         userDomainId = user.domainId;
         userDepartment = user.lob;
         userSubGroups = (user.sub || '').split(',').map(s => s.trim());
+        userSubGroups = (user.sub || '').split(',').map(s => s.trim());
 
         document.getElementById('email').value = userEmail;
         document.getElementById('domainId').value = userDomainId;
@@ -349,6 +352,7 @@ function login() {
         document.getElementById('dashboard').classList.remove('hidden');
         showSection('doubt');
         attachDataListeners();
+        updateQueryToAnswerBadge();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -437,6 +441,7 @@ function login() {
         userDomainId = user.domainId;
         userDepartment = user.lob;
         userSubGroups = (user.sub || '').split(',').map(s => s.trim());
+        userSubGroups = (user.sub || '').split(',').map(s => s.trim());
 
         document.getElementById('email').value = userEmail;
         document.getElementById('domainId').value = userDomainId;
@@ -447,6 +452,7 @@ function login() {
         document.getElementById('dashboard').classList.remove('hidden');
         showSection('doubt');
         attachDataListeners();
+        updateQueryToAnswerBadge();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -547,6 +553,7 @@ function login() {
         userEmail = user.email.trim().toLowerCase();
         userDomainId = user.domainId;
         userDepartment = user.lob;
+        userSubGroups = (user.sub || '').split(',').map(s => s.trim());
 
         document.getElementById('email').value = userEmail;
         document.getElementById('domainId').value = userDomainId;
@@ -557,6 +564,7 @@ function login() {
         document.getElementById('dashboard').classList.remove('hidden');
         showSection('doubt');
         attachDataListeners();
+        updateQueryToAnswerBadge();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -666,7 +674,8 @@ function updateSubDropdown() {
 
   let options = [];
   if (lob === "Host") options = ["Central", "NY/VA", "East", "West"];
-  else if (lob === "Local" || lob === "National") options = ["Central", "Non-Central"];
+  else if (lob === "Local") options = ["Local Central", "Local Non-Central"];
+  else if (lob === "National") options = ["National Central", " national Non-Central"];
   else {
     subOptions.classList.add("hidden");
     return;
@@ -691,14 +700,7 @@ loginForm.addEventListener('submit', function(e) {
   document.getElementById('dashboard').classList.remove('hidden');
 });
 
-function getSubDepartmentCheckboxes(domainId, index) {
-  const users = JSON.parse(localStorage.getItem('users') || '[]');
-  const currentUser = users.find(u => u.domainId === domainId);
-  if (!currentUser) return '';
-
-  const subList = currentUser.sub.split(',').map(dep => dep.trim());
-  return subList.map(dep =>
-    `<label><input type="checkbox" name="dept${index}" value="${dep}"> ${dep}</label>`
+" value="${dep}"> ${dep}</label>`
   ).join('');
 }
 
@@ -749,6 +751,7 @@ function login() {
         userDomainId = user.domainId;
         userDepartment = user.lob;
         userSubGroups = (user.sub || '').split(',').map(s => s.trim());
+        userSubGroups = (user.sub || '').split(',').map(s => s.trim());
 
         document.getElementById('email').value = userEmail;
         document.getElementById('domainId').value = userDomainId;
@@ -759,6 +762,7 @@ function login() {
         document.getElementById('dashboard').classList.remove('hidden');
         showSection('doubt');
         attachDataListeners();
+        updateQueryToAnswerBadge();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -806,7 +810,7 @@ function resetPassword() {
 <a href="#" onclick="showSection('doubt')">Doubt</a>
 <a href="#" onclick="showSection('resolved')">Resolved</a>
 <a href="#" onclick="showSection('mydoubt')">My Doubts</a>
-<a href="#" onclick="showSection('query')">Query to Answer</a>
+<a href="#" onclick="showSection('query'); updateQueryToAnswerBadge();">Query to Answer <span id="queryCount" style="background:red; color:white; padding:2px 6px; border-radius:12px; margin-left:8px; font-size:12px; display:none;"></span></a>
 </div>
 <div style="position: fixed; top: 10px; right: 20px; z-index: 999;">
 <button id="popupBtn" onclick="showPopupPage()">
@@ -824,18 +828,16 @@ let userEmail = '', userDomainId = '', userDepartment = '', userSubGroups = [];
 let popupMessages = [], unreadPopups = [], readPopups = [];
 
 document.addEventListener('DOMContentLoaded', function () {
-  const emailOptions = ['user1@example.com', 'user2@example.com'];
+  const emailOptions = ['user1@example.com', 'user4@example.com','user3@example.com'];
   const doughts = [], resolvedDoughts = [];
 
-    const storedDoubts = localStorage.getItem('doubts');
+    const storedDoubts = null;
     if (storedDoubts) doughts.push(...JSON.parse(storedDoubts));
 
-    const storedResolved = localStorage.getItem('resolvedDoughts');
+    const storedResolved = null;
     if (storedResolved) resolvedDoughts.push(...JSON.parse(storedResolved));
 
-    function saveDoubtsToStorage() {
-      localStorage.setItem('doubts', JSON.stringify(doughts));
-    }
+    
 
     document.getElementById('loginForm').addEventListener('submit', function (e) {
       e.preventDefault();
@@ -846,7 +848,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('login-section').classList.add('hidden');
       document.getElementById('dashboard').classList.remove('hidden');
       showSection('doubt');
-let stored = JSON.parse(localStorage.getItem('popup_' + userDepartment)) || [];
+let stored = JSON.parse(null) || [];
 unreadPopups = stored.filter(p => !p.read);
 readPopups = stored.filter(p => p.read);
 updatePopupBadge();
@@ -857,7 +859,7 @@ updatePopupBadge();
           <button onclick='submitDoubt()'>Submit</button>
         `;
       } else if (section === 'resolved') {
-        contentArea.innerHTML = '<h3>Resolved Doubts</h3>' + generateResolvedTable();
+        contentArea.innerHTML = '<h3>Resolved Doubts</h3>' + window.generateResolvedTable();
       } else if (section === 'mydoubt') {
         const myDoubts = doughts.filter(d => d.domainId === userDomainId);
         let html = '<h3>My Doubts</h3>' + myDoubts.map(d =>
@@ -867,7 +869,7 @@ updatePopupBadge();
         contentArea.innerHTML = html;
       } else if (section === 'query') {
         if (emailOptions.includes(userEmail.toLowerCase())) {
-          const assigned = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending');
+          assignedDoubts = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending');
           contentArea.innerHTML = '<h3>Query to Answer</h3>' + assigned.map((d, index) => `
             <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
               <strong>${d.lob}</strong> |<strong>${d.domainId}</strong> | Doubt No: ${d.doubtNumber}<br>
@@ -922,7 +924,7 @@ updatePopupBadge();
           <h3>Doubt Detail</h3>
           <div style="border:1px solid #ccc; padding:15px; border-radius:10px;">
             <strong>Domain ID:</strong> ${d.domainId}<br>
-            <strong>Doubt Number:</strong> ${d.doubtNumber}<br>
+            <strong>Inquiry Number:</strong> ${d.doubtNumber}<br>
             <strong>Attachment Number:</strong> ${d.attachmentNumber}<br>
             <strong>Field:</strong> ${d.field}<br>
             <strong>Description:</strong> ${d.description}<br>
@@ -934,44 +936,26 @@ updatePopupBadge();
       }
     }
 
-    window.viewResolved = function(index) {
-      const d = resolvedDoughts[index];
-      const container = document.getElementById('content-area');
-      container.innerHTML = `
-        <h3>Resolved Doubt Detail</h3>
-        <div style="border:1px solid #ccc; padding:15px; border-radius:10px;">
-          <strong>Domain ID:</strong> ${d.domainId}<br>
-          <strong>Doubt Number:</strong> ${d.doubtNumber}<br>
-          <strong>Attachment Number:</strong> ${d.attachmentNumber}<br>
-          <strong>Field:</strong> ${d.field || 'General'}<br>
-          <strong>Description:</strong> ${d.description}<br>
-          <strong>Resolved Comment:</strong> ${d.resolvedComment}<br><br>
-          <button onclick="showSection('resolved')">Back</button>
-        </div>
-      `;
-    }
+window.viewResolved = function(index) {
+  const d = resolvedDoughts[index];
+  const container = document.getElementById('content-area');
+  container.dataset.currentSection = 'viewResolved';
+  container.innerHTML = `
+    <h3>Resolved Doubt Detail</h3>
+    <div style="border:1px solid #ccc; padding:15px; border-radius:10px;">
+      <strong>Domain ID:</strong> ${d.domainId}<br>
+      <strong>Doubt Number:</strong> ${d.doubtNumber}<br>
+      <strong>Attachment Number:</strong> ${d.attachmentNumber}<br>
+      <strong>Field:</strong> ${d.field || 'General'}<br>
+      <strong>Description:</strong> ${d.description}<br>
+      <strong>Resolved Comment:</strong> ${d.resolvedComment}<br><br>
+      <button onclick="showSection('resolved')">Back</button>
+    </div>
+  `;
+}
 
-window.filterResolvedTable = function() {
-  const fieldFilter = document.getElementById('resolvedFilter').value.toLowerCase();
-  const domainSearch = document.getElementById('searchDomainId').value.toLowerCase();
-  const doubtSearch = document.getElementById('searchDoubtNo').value.toLowerCase();
-  const descSearch = document.getElementById('searchDescription').value.toLowerCase();
 
-  const rows = document.querySelectorAll('#resolvedTable tr[data-field]');
-  rows.forEach(row => {
-    const field = row.dataset.field?.toLowerCase() || '';
-    const domain = row.children[1]?.innerText.toLowerCase() || '';
-    const doubt = row.children[2]?.innerText.toLowerCase() || '';
-    const description = row.children[4]?.innerText.toLowerCase() || '';
-
-    const matches =
-      (fieldFilter === 'all' || field === fieldFilter) &&
-      domain.includes(domainSearch) &&
-      doubt.includes(doubtSearch) &&
-      description.includes(descSearch);
-
-    row.style.display = matches ? '' : 'none';
-  });
+);
 }
 
 
@@ -1010,9 +994,11 @@ function generateResolvedTable() {
     const depts = d.department.split(',').map(dep => dep.trim());
 if (depts.some(dep => userSubGroups.includes(dep)))
  {
-      html += `<tr data-field="${d.field || 'General'}">
-        <td>${d.field || 'General'}</td><td>${d.domainId}</td><td>${d.doubtNumber}</td><td>${d.attachmentNumber}</td><td>${d.description}</td><td>${d.resolvedComment}</td>
-        <td><button onclick="viewResolved(${index})">View</button></td></tr>`;
+      html += `<tr data-field="${d.field || ''}">
+        <td>${d.field || ''}</td><td>${d.domainId}</td><td>${d.doubtNumber}</td><td>${d.attachmentNumber}</td><td>${d.description}</td><td>${d.resolvedComment}</td>
+        <td><button onclick="viewResolved(${index})">View</button>
+${['user4@example.com','user3@example.com'].includes(userEmail) ? `<button onclick="showUpdateResolved(${index})">Update</button>` : ''}
+</td></tr>`;
     }
   }
   html += '</table>';
@@ -1045,9 +1031,9 @@ if (depts.some(dep => userSubGroups.includes(dep)))
 
 for (const dept of depts) {
   const msg = `Doubt No: ${doubt.doubtNumber}\\nField: ${doubt.field}\\nResolved Comment: ${comment}`;
-let popupDept = JSON.parse(localStorage.getItem('popup_' + dept)) || [];
+let popupDept = JSON.parse(null) || [];
 popupDept.push({ msg: msg, read: false });
-localStorage.setItem('popup_' + dept, JSON.stringify(popupDept));
+);
 
   resolvedDoughts.push({
     domainId: doubt.domainId,
@@ -1059,7 +1045,7 @@ localStorage.setItem('popup_' + dept, JSON.stringify(popupDept));
     field: doubt.field
   });
 }
-      localStorage.setItem('resolvedDoughts', JSON.stringify(resolvedDoughts));
+      );
 
       alert("Email sent to: " + doubt.domainId + "\\nResolved in departments: " + depts.join(", "));
       alert("Popup to users in departments: " + depts.join(", "));
@@ -1118,7 +1104,7 @@ function markAllRead() {
   unreadPopups.forEach(p => p.read = true);
   readPopups.push(...unreadPopups);
   unreadPopups = [];
-  localStorage.setItem('popup_' + userDepartment, JSON.stringify([...readPopups]));
+  );
   updatePopupBadge();
   showPopupPage();
 }
@@ -1184,6 +1170,7 @@ function login() {
         userDomainId = user.domainId;
         userDepartment = user.lob;
         userSubGroups = (user.sub || '').split(',').map(s => s.trim());
+        userSubGroups = (user.sub || '').split(',').map(s => s.trim());
 
 
         document.getElementById('email').value = userEmail;
@@ -1195,6 +1182,7 @@ function login() {
         document.getElementById('dashboard').classList.remove('hidden');
         showSection('doubt');
         attachDataListeners();
+        updateQueryToAnswerBadge();
       })
       .catch((error) => {
         alert("Login failed: " + error.message);
@@ -1264,6 +1252,7 @@ function attachDataListeners(){
   // Doubts
   doubtsRef.on('value', snap=>{
     doughts = mapToArray(snap.val());
+    updateQueryToAnswerBadge();
     // Refresh current screen if dashboard visible
     refreshCurrentSection();
   });
@@ -1329,7 +1318,7 @@ window.viewDoubt = function (doubtNumber) {
       <h3>Doubt Detail</h3>
       <div style="border:1px solid #ccc; padding:15px; border-radius:10px;">
         <strong>Domain ID:</strong> ${d.domainId}<br>
-        <strong>Doubt Number:</strong> ${d.doubtNumber}<br>
+        <strong>Inquiry Number:</strong> ${d.doubtNumber}<br>
         <strong>Attachment Number:</strong> ${d.attachmentNumber}<br>
         <strong>Field:</strong> ${d.field}<br>
         <strong>Description:</strong> ${d.description}<br>
@@ -1342,64 +1331,67 @@ window.viewDoubt = function (doubtNumber) {
 }
 
 // Override resolveDoubt to update Firebase
-window.resolveDoubt = function(index){
-  // We filtered by assignedEmail==userEmail & pending in showSection('query')
-  const pending = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending');
-  const doubt = pending[index];
-  if(!doubt){ alert('Doubt not found.'); return; }
-
+window.resolveDoubt = function(index) {
   const decision = document.getElementById('decision' + index).value.trim();
-  const comment  = document.getElementById('comment' + index).value.trim();
+  const comment = document.getElementById('comment' + index).value.trim();
   const depts = Array.from(document.querySelectorAll('input[name="dept' + index + '"]:checked')).map(cb => cb.value);
 
-  if (!decision || decision.split(/\s+/).length > 15 || !comment || depts.length === 0) {
+  if (!decision || decision.split(" ").length > 15 || !comment || depts.length === 0) {
     alert("Please fill all fields correctly (max 15 words for decision).");
     return;
   }
 
-  // Find Firebase key for this doubt
-  doubtsRef.once('value', snap=>{
-    const data = snap.val() || {};
-    let keyFound = null;
-    for(const [k,v] of Object.entries(data)){
-      if(v.doubtNumber === doubt.doubtNumber && v.domainId === doubt.domainId){
-        keyFound = k; break;
-      }
+  const doubt = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending')[index];
+  if (!doubt) {
+    alert("query not found.");
+    return;
+  }
+
+  const doubtKey = doubt._id;
+  const updatedDoubt = {
+    ...doubt,
+    status: 'resolved',
+    resolvedComment: comment,
+    decision,
+    department: depts.join(", ")
+  };
+
+  // Push to resolved
+  resolvedRef.push(updatedDoubt);
+
+  // Remove from doubts
+  doubtsRef.child(doubtKey).remove();
+
+  // Send popups
+const msg = `Doubt No: ${doubt.doubtNumber}\nField: ${doubt.field}\nResolved Comment: ${comment}`;
+
+const notifiedDepts = new Set();
+
+for (const dept of depts) {
+  notifiedDepts.add(dept);
+  popupsRefForDept(dept).once('value').then(snapshot => {
+    const existing = snapshot.val() || {};
+    const alreadyExists = Object.values(existing).some(p => p.msg.includes(doubt.doubtNumber));
+    if (!alreadyExists) {
+      popupsRefForDept(dept).push({ msg, read: false });
     }
-    if(!keyFound){ alert('Doubt not found in database.'); return; }
-
-    // Update the existing doubt to resolved
-    const updateObj = {
-      ...doubt,
-      status: 'resolved',
-      resolvedComment: comment,
-      department: depts.join(", ")
-    };
-    db.ref('doubts/' + keyFound).set(updateObj);
-
-    // Push resolved record(s) (one per dept so we can filter same as before)
-    depts.forEach(dept=>{
-      resolvedRef.push({
-        domainId: doubt.domainId,
-        doubtNumber: doubt.doubtNumber,
-        attachmentNumber: doubt.attachmentNumber,
-        description: doubt.description,
-        resolvedComment: comment,
-        department: dept,
-        field: doubt.field
-      });
-      // Popup for dept
-      popupsRefForDept(dept).push({
-        msg: `Doubt No: ${doubt.doubtNumber}\nField: ${doubt.field}\nResolved Comment: ${comment}`,
-        read: false,
-        ts: Date.now()
-      });
-    });
-
-    alert("Resolved and notifications sent to: " + depts.join(", "));
-    showSection('query');
   });
 }
+
+// Also notify user's main department if not already notified
+if (!notifiedDepts.has(userDepartment)) {
+  popupsRefForDept(userDepartment).once('value').then(snapshot => {
+    const existing = snapshot.val() || {};
+    const alreadyExists = Object.values(existing).some(p => p.msg.includes(doubt.doubtNumber));
+    if (!alreadyExists) {
+      popupsRefForDept(userDepartment).push({ msg, read: false });
+    }
+  });
+}
+
+  alert("Resolved successfully.\nNotified Departments: " + depts.join(", "));
+  showSection('query');
+};
 
 // Popup Pages
 function showPopupPage() {
@@ -1476,6 +1468,7 @@ window.updatePopupBadge = updatePopupBadge;
     // attach listeners once (guard)
     if(!lf._firebaseWrapped){
       attachDataListeners();
+        updateQueryToAnswerBadge();
       lf._firebaseWrapped = true;
     }
   });
@@ -1538,66 +1531,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 </script>
 <script>
-window.showSection = function (section) {
-  const contentArea = document.getElementById('content-area');
-  if (!contentArea) return;
-  contentArea.dataset.currentSection = section;
-
-  if (section === 'doubt') {
-    contentArea.innerHTML = `
-      <h3>Submit Doubt</h3>
-      <label>Field:</label><select id='field'>
-        <option>Timely filling</option>
-        <option>General Inquiry</option>
-        <option>No Sccf</option>
-        <option>Pricing issue</option>
-        <option>High Dollar</option>
-        <option>Others</option>
-      </select>
-      <label>Doubt Number:</label><input id='doubtNumber' required>
-      <label>Attachment Number:</label><input id='attachmentNumber'>
-      <label>Description:</label><textarea id='doubtDesc'></textarea>
-      <label>Select Email:</label><select id='emailSelect'>${['user1@example.com', 'user2@example.com'].map(e => `<option>${e}</option>`).join('')}</select>
-      <button onclick='submitDoubt()'>Submit</button>
-    `;
-  } else if (section === 'resolved') {
-    contentArea.innerHTML = '<h3>Resolved Doubts</h3>' + generateResolvedTable();
-  } else if (section === 'mydoubt') {
-    const myDoubts = doughts.filter(d => d.domainId === userDomainId);
-    let html = '<h3>My Doubts</h3>' + myDoubts.map(d =>
-      `${d.doubtNumber} - ${d.status === 'resolved' ? 'Resolved: ' + d.resolvedComment : 'Under Review'} 
-       <button onclick='viewDoubt("${d.doubtNumber}")'>View</button>`
-    ).join('<br>');
-    contentArea.innerHTML = html;
-  } else if (section === 'query') {
-    const emailOptions = ['user1@example.com', 'user2@example.com'];
-    if (emailOptions.includes(userEmail.toLowerCase())) {
-      const assigned = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending');
-      contentArea.innerHTML = '<h3>Query to Answer</h3>' + assigned.map((d, index) => `
-        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-          <strong>${d.domainId}</strong>|<strong>${d.field}</strong> | Doubt No: ${d.doubtNumber}<br>
-          Attachment No: ${d.attachmentNumber}<br>
-          Description: ${d.description}<br>
-          <button onclick="showResolveForm(${index})">Resolve</button>
-          <div id="resolveForm${index}" style="display:none; margin-top:10px;">
-            <label>Decision (max 15 words):</label><input id="decision${index}" maxlength="200">
-            <label>Resolved Comment:</label><textarea id="comment${index}"></textarea>
-            <label>Select Departments to Notify:</label>
-            <div class="checkbox-row" style="display: flex; flex-direction: row; gap: 15px; flex-wrap: wrap;">
-              ${getSubDepartmentCheckboxes(userDomainId, index)}
-            </div>
-            <button onclick="resolveDoubt(${index})">Resolved</button>
-            <button onclick="cancelResolve(${index})">Cancel</button>
-          </div>
-        </div>
-      `).join('');
-    } else {
-      contentArea.innerHTML = '<h3>Access Denied</h3>';
-    }
-  }
-}
-</script>
-<script>
 window.generateResolvedTable = function() {
   let html = `
     <div style="display:flex; gap:10px; align-items:flex-end; flex-wrap:wrap; margin-bottom: 15px;">
@@ -1635,7 +1568,9 @@ if (depts.some(dep => userSubGroups.includes(dep)))
  {
       html += `<tr data-field="${d.field || 'General'}">
         <td>${d.field || 'General'}</td><td>${d.domainId}</td><td>${d.doubtNumber}</td><td>${d.attachmentNumber}</td><td>${d.description}</td><td>${d.resolvedComment}</td>
-        <td><button onclick="viewResolved(${index})">View</button></td></tr>`;
+        <td><button onclick="viewResolved(${index})">View</button>
+${['user4@example.com','user3@example.com'].includes(userEmail) ? `<button onclick="showUpdateResolved(${index})">Update</button>` : ''}
+</td></tr>`;
     }
   }
   html += '</table>';
@@ -1648,13 +1583,7 @@ window.logout = function () {
 </script>
 
 <script>
-function getSubDepartmentCheckboxes(domainId, index) {
-  const lobSubs = {
-    Host: ["Central", "NY/VA", "West", "East"],
-    Local: ["Local central", "Local Non-central"],
-    National: ["National central", "National Non-central"],
-    West: []
-  };
+;
   const subs = lobSubs[userDepartment] || [];
   return subs.map(dep =>
     `<label><input type="checkbox" name="dept${index}" value="${dep}"> ${dep}</label>`
@@ -1674,5 +1603,203 @@ function cancelResolve(index) {
 }
 </script>
 
+
+
+<script>
+function getSubDepartmentCheckboxes(domainId, index) {
+  const lobSubs = {
+    Host: ["Central", "NY/VA", "West", "East"],
+    Local: ["Local central", "Local Non-central"],
+    National: ["National central", "National Non-central"],
+    West: []
+  };
+  const subs = lobSubs[userDepartment] || [];
+  return subs.map(dep =>
+    `<label><input type="checkbox" name="dept${index}" value="${dep}"> ${dep}</label>`
+  ).join('');
+}
+</script>
+
+
+<script>
+window.filterResolvedTable = function() {
+  const fieldFilter = document.getElementById('resolvedFilter')?.value.toLowerCase() || 'all';
+  const domainSearch = document.getElementById('searchDomainId')?.value.toLowerCase() || '';
+  const doubtSearch = document.getElementById('searchDoubtNo')?.value.toLowerCase() || '';
+  const descSearch = document.getElementById('searchDescription')?.value.toLowerCase() || '';
+
+  const rows = document.querySelectorAll('#resolvedTable tr[data-field]');
+  rows.forEach(row => {
+    const field = row.dataset.field?.toLowerCase() || '';
+    const domain = row.children[1]?.innerText.toLowerCase() || '';
+    const doubt = row.children[2]?.innerText.toLowerCase() || '';
+    const description = row.children[4]?.innerText.toLowerCase() || '';
+
+    const matches =
+      (fieldFilter === 'all' || field === fieldFilter) &&
+      domain.includes(domainSearch) &&
+      doubt.includes(doubtSearch) &&
+      description.includes(descSearch);
+
+    row.style.display = matches ? '' : 'none';
+  });
+}
+</script>
+
+<script>
+window.viewResolved = function(index) {
+  const d = resolvedDoughts[index];
+  if (!d) return alert("Resolved doubt not found.");
+
+  const container = document.getElementById('content-area');
+  container.dataset.currentSection = 'viewResolved';
+  container.innerHTML = `
+    <h3>Resolved Doubt Detail</h3>
+    <div style="border:1px solid #ccc; padding:15px; border-radius:10px;">
+      <strong>Domain ID:</strong> ${d.domainId}<br>
+      <strong>Doubt Number:</strong> ${d.doubtNumber}<br>
+      <strong>Attachment Number:</strong> ${d.attachmentNumber}<br>
+      <strong>Field:</strong> ${d.field || 'General'}<br>
+      <strong>Description:</strong> ${d.description}<br>
+      <strong>Resolved Comment:</strong> ${d.resolvedComment}<br><br>
+      <button onclick="showSection('resolved')">Back</button>
+    </div>
+  `;
+}
+</script>
+<script>
+window.showSection = function (section) {
+  const contentArea = document.getElementById('content-area');
+  if (!contentArea) return;
+  contentArea.dataset.currentSection = section;
+
+  if (section === 'doubt') {
+    contentArea.innerHTML = `
+      <h3>Submit Doubt</h3>
+      <label>Field:</label><select id='field'>
+        <option>Timely filling</option>
+        <option>General Inquiry</option>
+        <option>No Sccf</option>
+        <option>Pricing issue</option>
+        <option>High Dollar</option>
+        <option>Others</option>
+      </select>
+      <label>Inquiry Number:</label><input id='doubtNumber' required>
+      <label>Attachment Number:</label><input id='attachmentNumber'>
+      <label>Description:</label><textarea id='doubtDesc'></textarea>
+      <label>Select Email:</label><select id='emailSelect'>${['user1@example.com', 'user4@example.com','user3@example.com'].map(e => `<option>${e}</option>`).join('')}</select>
+      <button onclick='submitDoubt()'>Submit</button>
+    `;
+  } else if (section === 'resolved') {
+    contentArea.innerHTML = '<h3>Resolved Doubts</h3>' + generateResolvedTable();
+  } else if (section === 'mydoubt') {
+    const myPending = doughts.filter(d => d.domainId === userDomainId);
+    const myResolved = resolvedDoughts.filter(d => d.domainId === userDomainId);
+
+    let html = '<h3>My Doubts</h3>';
+    myPending.forEach(d => {
+      html += `
+        ${d.doubtNumber} - Under Review
+        <button onclick='viewDoubt("${d.doubtNumber}")'>View</button><br>`;
+    });
+    myResolved.forEach((d, index) => {
+      html += `
+        ${d.doubtNumber} - Resolved
+        <button onclick='viewResolved(${index})'>View</button><br>`;
+    });
+
+    contentArea.innerHTML = html;
+  } else if (section === 'query') {
+    const emailOptions = ['user1@example.com', 'user4@example.com','user3@example.com'];
+    if (emailOptions.includes(userEmail.toLowerCase())) {
+      const assigned = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending');
+      contentArea.innerHTML = '<h3>Query to Answer</h3>' + assigned.map((d, index) => `
+        <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
+          <strong>${d.domainId}</strong>|<strong>${d.field}</strong> | Doubt No: ${d.doubtNumber}<br>
+          Attachment No: ${d.attachmentNumber}<br>
+          Description: ${d.description}<br>
+          <button onclick="showResolveForm(${index})">Resolve</button>
+          <div id="resolveForm${index}" style="display:none; margin-top:10px;">
+            <label>Decision (max 15 words):</label><input id="decision${index}" maxlength="200">
+            <label>Resolved Comment:</label><textarea id="comment${index}"></textarea>
+            <label>Select Departments to Notify:</label>
+            <div class="checkbox-row" style="display: flex; flex-direction: row; gap: 15px; flex-wrap: wrap;">
+              ${getSubDepartmentCheckboxes(userDomainId, index)}
+            </div>
+            <button onclick="resolveDoubt(${index})">Resolved</button>
+            <button onclick="cancelResolve(${index})">Cancel</button>
+          </div>
+        </div>
+      `).join('');
+    } else {
+      contentArea.innerHTML = '<h3>Access Denied</h3>';
+    }
+  }
+}
+
+function updateQueryToAnswerBadge() {
+  const emailOptions = ['user1@example.com', 'user4@example.com', 'user3@example.com'];
+  const badge = document.getElementById("queryCount");
+  if (!badge || !emailOptions.includes(userEmail)) return;
+
+  const count = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending').length;
+  badge.textContent = count;
+  badge.style.display = count > 0 ? 'inline-block' : 'none';
+}
+
+</script>
+<script>
+window.showUpdateResolved = function(index) {
+  const d = resolvedDoughts[index];
+  if (!d) return alert("Resolved doubt not found.");
+  const container = document.getElementById('content-area');
+  container.dataset.currentSection = 'updateResolved';
+  container.innerHTML = `
+    <h3>🔄 Update Resolved Comment</h3>
+    <div style="border:1px solid #ccc; padding:15px; border-radius:10px;">
+      <strong>Domain ID:</strong> ${d.domainId}<br>
+      <strong>Doubt Number:</strong> ${d.doubtNumber}<br>
+      <label>Resolved Comment:</label><br>
+      <textarea id="updatedResolvedComment" style="width:100%;height:80px;">${d.resolvedComment}</textarea><br>
+      <label>Notify Departments:</label><br>
+      <input type="text" id="updatedDepartments" style="width:100%;" value="${d.department}"><br><br>
+      <button onclick="window.submitResolvedUpdate(${index})">Update</button>
+      <button onclick="showSection('resolved')">Cancel</button>
+    </div>
+  `;
+};
+
+
+window.submitResolvedUpdate = function(index) {
+  const newComment = document.getElementById("updatedResolvedComment").value.trim();
+  const newDepts = document.getElementById("updatedDepartments").value.trim();
+  if (!newComment || !newDepts) return alert("Please fill all fields.");
+  const d = resolvedDoughts[index];
+  if (!d || !d._id) return alert("Error: Resolved item or its ID not found.");
+
+  const ref = db.ref('resolvedDoubts');
+  const key = d._id;
+  ref.child(key).update({
+    resolvedComment: newComment,
+    department: newDepts
+  }).then(() => {
+    const msg = `Updated Doubt No: ${d.doubtNumber}
+Field: ${d.field}
+Resolved Comment: ${newComment}`;
+    const deptList = newDepts.split(',').map(dep => dep.trim());
+    deptList.forEach(dept => {
+      const popupRef = db.ref('popups/' + encodeURIComponent(dept));
+      popupRef.push({ msg: msg, read: false });
+    });
+    alert("Resolved comment updated and departments notified.");
+    showSection('resolved');
+  }).catch(err => {
+    alert("Failed to update: " + err.message);
+  });
+};
+
+</script>
+
 </body>
+
 </html>
