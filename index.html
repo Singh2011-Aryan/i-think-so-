@@ -874,7 +874,7 @@ function resetPassword() {
 <div id="content-area"></div>
 </div>
 <footer style="background: #000; color: white; padding: 10px; text-align: center; position: fixed; bottom: 0; left: 0; right: 0; width: 100%;">
-  © 2025 Doubt Tracker | All Rights Reserved
+  About us:- PDR Gurugram | Feedback :- Umesh Kumar, Aryan Singh
 </footer>
 </div>
 <script>
@@ -927,7 +927,7 @@ updatePopupBadge();
           assignedDoubts = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending');
           contentArea.innerHTML = '<h3>Query to Answer</h3>' + assigned.map((d, index) => `
             <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-              <strong>${d.lob}</strong> |<strong>${d.domainId}</strong> | Doubt No: ${d.doubtNumber}<br>
+              <strong>${d.lob}</strong> |<strong>${d.domainId}</strong> | Inquiry No: ${d.doubtNumber}<br>
               Attachment No: ${d.attachmentNumber}<br>
               Description: ${d.description}<br>
               <button onclick="showResolveForm(${index})">Resolve</button>
@@ -1034,7 +1034,7 @@ function generateResolvedTable() {
       <input type="text" id="searchDomainId" oninput="filterResolvedTable()" placeholder="Search...">
     </div>
     <div>
-      <label>Doubt No:</label>
+      <label>Inquiry No:</label>
       <input type="text" id="searchDoubtNo" oninput="filterResolvedTable()" placeholder="Search...">
     </div>
     <div>
@@ -1044,7 +1044,7 @@ function generateResolvedTable() {
   </div>
 `;
 
-  html += '<table id="resolvedTable"><tr><th>Field</th><th>Domain ID</th><th>Doubt No</th><th>Attachment No</th><th>Description</th><th>Resolved Comment</th><th>Action</th></tr>';
+  html += '<table id="resolvedTable"><tr><th>Field</th><th>Domain ID</th><th>Inquiry No</th><th>Attachment No</th><th>Description</th><th>Resolved Comment</th><th>Action</th></tr>';
   for (const [index, d] of resolvedDoughts.entries()) {
     const depts = d.department.split(',').map(dep => dep.trim());
 if (depts.some(dep => userSubGroups.includes(dep)))
@@ -1085,7 +1085,7 @@ ${['user4@example.com','user3@example.com'].includes(userEmail) ? `<button oncli
       saveDoubtsToStorage();
 
 for (const dept of depts) {
-  const msg = `Doubt No: ${doubt.doubtNumber}\\nField: ${doubt.field}\\nResolved Comment: ${comment}`;
+  const msg = `Inquiry No: ${doubt.doubtNumber}\\nField: ${doubt.field}\\nResolved Comment: ${comment}`;
 let popupDept = JSON.parse(null) || [];
 popupDept.push({ msg: msg, read: false });
 );
@@ -1418,7 +1418,7 @@ window.resolveDoubt = function(index) {
   doubtsRef.child(doubtKey).remove();
 
   // Send popups
-const msg = `Doubt No: ${doubt.doubtNumber}\nField: ${doubt.field}\nResolved Comment: ${comment}`;
+const msg = `Inquiry No: ${doubt.doubtNumber}\nField: ${doubt.field}\nResolved Comment: ${comment}`;
 
 const notifiedDepts = new Set();
 
@@ -1606,7 +1606,7 @@ window.generateResolvedTable = function() {
         <input type="text" id="searchDomainId" oninput="filterResolvedTable()" placeholder="Search...">
       </div>
       <div>
-        <label>Doubt No:</label>
+        <label>Inquiry No:</label>
         <input type="text" id="searchDoubtNo" oninput="filterResolvedTable()" placeholder="Search...">
       </div>
       <div>
@@ -1616,7 +1616,7 @@ window.generateResolvedTable = function() {
     </div>
   `;
 
-  html += '<table id="resolvedTable"><tr><th>Field</th><th>Domain ID</th><th>Doubt No</th><th>Attachment No</th><th>Description</th><th>Resolved Comment</th><th>Action</th></tr>';
+  html += '<table id="resolvedTable"><tr><th>Field</th><th>Domain ID</th><th>Inquiry No</th><th>Attachment No</th><th>Description</th><th>Resolved Comment</th><th>Action</th></tr>';
   for (const [index, d] of resolvedDoughts.entries()) {
     const depts = d.department.split(',').map(dep => dep.trim());
 if (depts.some(dep => userSubGroups.includes(dep)))
@@ -1695,7 +1695,7 @@ window.filterResolvedTable = function() {
 <script>
 window.viewResolved = function(index) {
   const d = resolvedDoughts[index];
-  if (!d) return alert("Resolved doubt not found.");
+  if (!d) return alert("Resolved inquiry not found.");
 
   const container = document.getElementById('content-area');
   container.dataset.currentSection = 'viewResolved';
@@ -1766,7 +1766,7 @@ window.showSection = function (section) {
       const assigned = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending');
       contentArea.innerHTML = '<h3>Query to Answer</h3>' + assigned.map((d, index) => `
         <div style="border:1px solid #ccc; padding:10px; margin-bottom:10px;">
-          <strong>${d.domainId}</strong>|<strong>${d.field}</strong> | Doubt No: ${d.doubtNumber}<br>
+          <strong>${d.domainId}</strong>|<strong>${d.field}</strong> | Inquiry No: ${d.doubtNumber}<br>
           Attachment No: ${d.attachmentNumber}<br>
           Description: ${d.description}<br>
           <button onclick="showResolveForm(${index})">Resolve</button>
@@ -1803,7 +1803,7 @@ function updateQueryToAnswerBadge() {
 <script>
 window.showUpdateResolved = function(index) {
   const d = resolvedDoughts[index];
-  if (!d) return alert("Resolved doubt not found.");
+  if (!d) return alert("Resolved inquiry not found.");
   const container = document.getElementById('content-area');
   container.dataset.currentSection = 'updateResolved';
   container.innerHTML = `
@@ -1835,7 +1835,7 @@ window.submitResolvedUpdate = function(index) {
     resolvedComment: newComment,
     department: newDepts
   }).then(() => {
-    const msg = `Updated Doubt No: ${d.doubtNumber}
+    const msg = `Updated Inquiry No: ${d.doubtNumber}
 Field: ${d.field}
 Resolved Comment: ${newComment}`;
     const deptList = newDepts.split(',').map(dep => dep.trim());
