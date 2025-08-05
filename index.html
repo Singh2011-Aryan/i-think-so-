@@ -11,6 +11,7 @@
       margin: 0;
       background: linear-gradient(to right, #83a4d4, #b6fbff);
       color: #333;
+  padding-top: 70px;
     }
     .container {
       max-width: 400px;
@@ -181,8 +182,6 @@
   gap: 8px;
 }
 </style>
-
-
 <!-- Firebase App (compat) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js">
 
@@ -495,6 +494,52 @@ function resetPassword() {
 
 </script>
 <script>
+const emailNameMap = {
+  "user1@example.com": "User 1",
+  "iamaryan0110@gmail.com": "Aryan",
+  "user4@example.com": "User 4",
+  "user3@example.com": "User 3",
+"Manish.GR@carelon.com": "Manish G R",
+"Praneeth.StevenLobo@carelon.com": "Praneeth Steven Lobo",
+"Kavitha.Aashagari@carelon.com": "Aashagiri Kavitha",
+"SasiKumar.V@carelon.com": "Sasi Kumar V",
+"Poornima.S@carelon.com": "S, Poornima",
+"Riyazuddin.S@carelon.com": "Riyazuddin S",
+"Kavya.K@carelon.com": "Kavya K",
+"Divya.L@carelon.com": "L, Divya",
+"Nagaraj.Bendigeri@carelon.com": "Bendigeri, Nagaraj",
+"Karipe.SaiBharath@carelon.com": "Sai Bharath, Karipe",
+"Vivek.Saxena@carelon.com": "Vivek Saxena",
+"GirishKumar.Allada@carelon.com": "Allada, Girish Kumar",
+"Suhasini.Dillikar@carelon.com": "Dillikar suhasini",
+"Jeevan.KS@carelon.com": "K S, Jeevan",
+"Kavitha.M@carelon.com": "M, Kavitha",
+"Vidhya.K.v@carelon.com": "K.v, Vidhya",
+"Gayathri.Sundar@carelon.com": "Sundar, Gayathri",
+"KushalReddy.Sude@carelon.com": "Sude, Kushal Reddy",
+"Yogesh.A@carelon.com": "Yogesh A",
+"Venkatesh.C2@carelon.com": "VENKATESH.C",
+"Rakshitha.Sangapal@carelon.com": "Sangapal, Rakshitha",
+"Sweeti.Byagari@carelon.com": "Byagari Sweety",
+"Tabarak.Khan@carelon.com": "Khan, Tabarak",
+"Akshitha.P@carelon.com": "P, Akshitha",
+"Venkatesh.Barlapati@carelon.com": "Venkatesh Barlapati",
+"ANILNAYAk.Korra@carelon.com": "Korra Anil Nayak",
+"Shruthi.Ts2@carelon.com": "Shruthi TS",
+"Nirmala.K@carelon.com": "Nirmala K",
+"Nithya.Anantha@carelon.com": "Nithya Anantha",
+"Sujith.S@carelon.com": "Sujith S",
+"Harsha.BV@carelon.com": "B V, Harsha",
+"Bharath.Nakkala@carelon.com": "Nakkala, Bharath",
+"Nithin.J@carelon.com": "J, Nithin",
+"Prabhu.A@carelon.com": "A, Prabhu",
+"VinayKumar.Ks@carelon.com": "Ks, Vinay Kumar",
+"Mohammed.Altaf@carelon.com": "Altaf Mohammed",
+"ManojKumar.BR@carelon.com": "B R, Manoj Kumar",
+"Shanaz.Banu@carelon.com": "Banu, Shanaz",
+};
+</script>
+<script>
   const firebaseConfig = {
     apiKey: "AIzaSyC39907gs4-iS9S9Xqu3U0OTvXj1zkszNc",
     authDomain: "doubt-tracker-d6155.firebaseapp.com",
@@ -609,6 +654,7 @@ function resetPassword() {
 </head>
 <body>
 <div class="container" id="login-container">
+<h1 style="text-align:center; font-size:28px; color:#2c3e50; margin-bottom:20px;">Doubt Tracker</h1>
 <h2>Login</h2>
 <input id="loginDomainId" placeholder="Enter Domain ID" required="" type="text"/>
 <input id="loginPassword" placeholder="Enter Password" required="" type="password"/>
@@ -646,8 +692,8 @@ function resetPassword() {
 </div>
 <!-- Hidden Login Form for compatibility -->
 <form class="hidden" id="loginForm">
-<input id="email" type="email">
-<input id="domainId" type="text">
+<input id="email" type="email"/>
+<input id="domainId" type="text"/>
 <select id="department">
 <option value="Host">Host</option>
 <option value="Local">Local</option>
@@ -656,7 +702,7 @@ function resetPassword() {
 </select>
 <div id="sub-container" style="margin-top: 10px;"></div>
 <button type="submit">Login</button>
-</input></input></form>
+</form>
 <script>
 function toggleSection(id) {
   ['login-container', 'create-container', 'forgot-container'].forEach(i =>
@@ -805,6 +851,17 @@ function resetPassword() {
 
 </script>
 <div class="hidden" id="dashboard">
+<header style="background: linear-gradient(to right, #003366, #00509e); color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; position: fixed; top: 0; left: 0; right: 0; z-index: 1000; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); border-bottom: 3px solid #007BFF; height: 60px;">
+<div style="flex-grow: 1; text-align: center; font-size: 26px; font-weight: bold; letter-spacing: 1px; text-shadow: 1px 1px 2px #000;">📌 Doubt Tracker Dashboard</div>
+<div style="display: flex; gap: 14px; justify-content: flex-end; flex-shrink: 0;">
+<button id="popupBtn" onclick="showPopupPage()" onmouseout="this.style.background='#ffffff22'" onmouseover="this.style.background='#ffffff44'" style="background: #ffffff22; color: #fff; border: none; padding: 4px 8px; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; transition: background 0.3s ease;">
+      🔔 Popup <span id="popupCount" style="background: red; color: white; padding: 2px 6px; border-radius: 12px; display: none;"></span>
+</button>
+<button onclick="logout()" onmouseout="this.style.background='#ffffff22'" onmouseover="this.style.background='#ffffff44'" style="background: #ffffff22; color: #fff; border: none; padding: 6px 12px; border-radius: 6px; font-weight: bold; font-size: 14px; cursor: pointer; transition: background 0.3s ease;">
+      🚪 Logout
+    </button>
+</div>
+</header>
 <div class="sidebar">
 <h3>Dashboard</h3>
 <a href="#" onclick="showSection('doubt')">Doubt</a>
@@ -812,23 +869,21 @@ function resetPassword() {
 <a href="#" onclick="showSection('mydoubt')">My Doubts</a>
 <a href="#" onclick="showSection('query'); updateQueryToAnswerBadge();">Query to Answer <span id="queryCount" style="background:red; color:white; padding:2px 6px; border-radius:12px; margin-left:8px; font-size:12px; display:none;"></span></a>
 </div>
-<div style="position: fixed; top: 10px; right: 20px; z-index: 999;">
-<button id="popupBtn" onclick="showPopupPage()">
-  🔔 Popup <span id="popupCount" style="background:red; color:white; padding:2px 6px; border-radius:12px; display:none;"></span>
-</button>
-<button onclick="logout()">🚪 Logout</button>
-</div>
 <div class="content">
 <h2 id="deptTitle"></h2>
 <div id="content-area"></div>
 </div>
+<footer style="background: #000; color: white; padding: 10px; text-align: center; position: fixed; bottom: 0; left: 0; right: 0; width: 100%;">
+  © 2025 Doubt Tracker | All Rights Reserved
+</footer>
 </div>
 <script>
 let userEmail = '', userDomainId = '', userDepartment = '', userSubGroups = [];
 let popupMessages = [], unreadPopups = [], readPopups = [];
 
 document.addEventListener('DOMContentLoaded', function () {
-  const emailOptions = ['user1@example.com', 'user4@example.com','user3@example.com'];
+  const emailOptions = ['user1@example.com','iamaryan0110@gmail.com','user4@example.com','user3@example.com','Manish.GR@carelon.com','Manish.GR@carelon.com', 'Praneeth.StevenLobo@carelon.com', 'Kavitha.Aashagari@carelon.com', 'SasiKumar.V@carelon.com', 'Poornima.S@carelon.com', 'Riyazuddin.S@carelon.com', 'Kavya.K@carelon.com', 'Divya.L@carelon.com', 'Nagaraj.Bendigeri@carelon.com', 'Karipe.SaiBharath@carelon.com', 'Vivek.Saxena@carelon.com', 'GirishKumar.Allada@carelon.com', 'Suhasini.Dillikar@carelon.com', 'Jeevan.KS@carelon.com', 'Kavitha.M@carelon.com', 'Vidhya.K.v@carelon.com', 'Gayathri.Sundar@carelon.com', 'KushalReddy.Sude@carelon.com', 'Yogesh.A@carelon.com', 'Venkatesh.C2@carelon.com', 'Rakshitha.Sangapal@carelon.com', 'Sweeti.Byagari@carelon.com', 'Tabarak.Khan@carelon.com', 'Akshitha.P@carelon.com', 'Venkatesh.Barlapati@carelon.com', 'ANILNAYAk.Korra@carelon.com', 'Shruthi.Ts2@carelon.com', 'Nirmala.K@carelon.com', 'Nithya.Anantha@carelon.com', 'Sujith.S@carelon.com', 'Harsha.BV@carelon.com', 'Bharath.Nakkala@carelon.com', 'Nithin.J@carelon.com', 'Prabhu.A@carelon.com', 'VinayKumar.Ks@carelon.com', 'Mohammed.Altaf@carelon.com', 'ManojKumar.BR@carelon.com', 'Shanaz.Banu@carelon.com'
+];
   const doughts = [], resolvedDoughts = [];
 
     const storedDoubts = null;
@@ -1581,7 +1636,6 @@ window.logout = function () {
   location.reload(); // simple page reload to return to login screen
 }
 </script>
-
 <script>
 ;
   const subs = lobSubs[userDepartment] || [];
@@ -1590,8 +1644,6 @@ window.logout = function () {
   ).join('');
 }
 </script>
-
-
 <script>
 function showResolveForm(index) {
   const form = document.getElementById("resolveForm" + index);
@@ -1602,9 +1654,6 @@ function cancelResolve(index) {
   if (form) form.style.display = "none";
 }
 </script>
-
-
-
 <script>
 function getSubDepartmentCheckboxes(domainId, index) {
   const lobSubs = {
@@ -1619,8 +1668,6 @@ function getSubDepartmentCheckboxes(domainId, index) {
   ).join('');
 }
 </script>
-
-
 <script>
 window.filterResolvedTable = function() {
   const fieldFilter = document.getElementById('resolvedFilter')?.value.toLowerCase() || 'all';
@@ -1645,7 +1692,6 @@ window.filterResolvedTable = function() {
   });
 }
 </script>
-
 <script>
 window.viewResolved = function(index) {
   const d = resolvedDoughts[index];
@@ -1687,7 +1733,11 @@ window.showSection = function (section) {
       <label>Inquiry Number:</label><input id='doubtNumber' required>
       <label>Attachment Number:</label><input id='attachmentNumber'>
       <label>Description:</label><textarea id='doubtDesc'></textarea>
-      <label>Select Email:</label><select id='emailSelect'>${['user1@example.com', 'user4@example.com','user3@example.com'].map(e => `<option>${e}</option>`).join('')}</select>
+      <label>Select Email:</label>
+<input list="emailOptions" id="emailSelect" placeholder="Start typing name..." />
+<datalist id="emailOptions">
+  ${Object.entries(emailNameMap).map(([email, name]) => `<option value="${email}">${name}</option>`).join('')}
+</datalist>
       <button onclick='submitDoubt()'>Submit</button>
     `;
   } else if (section === 'resolved') {
@@ -1710,7 +1760,8 @@ window.showSection = function (section) {
 
     contentArea.innerHTML = html;
   } else if (section === 'query') {
-    const emailOptions = ['user1@example.com', 'user4@example.com','user3@example.com'];
+    const emailOptions = ['user1@example.com','iamaryan0110@gmail.com', 'user4@example.com','user3@example.com','Manish.GR@carelon.com','Manish.GR@carelon.com', 'Praneeth.StevenLobo@carelon.com', 'Kavitha.Aashagari@carelon.com', 'SasiKumar.V@carelon.com', 'Poornima.S@carelon.com', 'Riyazuddin.S@carelon.com', 'Kavya.K@carelon.com', 'Divya.L@carelon.com', 'Nagaraj.Bendigeri@carelon.com', 'Karipe.SaiBharath@carelon.com', 'Vivek.Saxena@carelon.com', 'GirishKumar.Allada@carelon.com', 'Suhasini.Dillikar@carelon.com', 'Jeevan.KS@carelon.com', 'Kavitha.M@carelon.com', 'Vidhya.K.v@carelon.com', 'Gayathri.Sundar@carelon.com', 'KushalReddy.Sude@carelon.com', 'Yogesh.A@carelon.com', 'Venkatesh.C2@carelon.com', 'Rakshitha.Sangapal@carelon.com', 'Sweeti.Byagari@carelon.com', 'Tabarak.Khan@carelon.com', 'Akshitha.P@carelon.com', 'Venkatesh.Barlapati@carelon.com', 'ANILNAYAk.Korra@carelon.com', 'Shruthi.Ts2@carelon.com', 'Nirmala.K@carelon.com', 'Nithya.Anantha@carelon.com', 'Sujith.S@carelon.com', 'Harsha.BV@carelon.com', 'Bharath.Nakkala@carelon.com', 'Nithin.J@carelon.com', 'Prabhu.A@carelon.com', 'VinayKumar.Ks@carelon.com', 'Mohammed.Altaf@carelon.com', 'ManojKumar.BR@carelon.com', 'Shanaz.Banu@carelon.com'
+];
     if (emailOptions.includes(userEmail.toLowerCase())) {
       const assigned = doughts.filter(d => d.assignedEmail === userEmail && d.status === 'pending');
       contentArea.innerHTML = '<h3>Query to Answer</h3>' + assigned.map((d, index) => `
@@ -1738,7 +1789,8 @@ window.showSection = function (section) {
 }
 
 function updateQueryToAnswerBadge() {
-  const emailOptions = ['user1@example.com', 'user4@example.com', 'user3@example.com'];
+  const emailOptions = ['user1@example.com','iamaryan0110@gmail.com', 'user4@example.com', 'user3@example.com',,'Manish.GR@carelon.com','Manish.GR@carelon.com', 'Praneeth.StevenLobo@carelon.com', 'Kavitha.Aashagari@carelon.com', 'SasiKumar.V@carelon.com', 'Poornima.S@carelon.com', 'Riyazuddin.S@carelon.com', 'Kavya.K@carelon.com', 'Divya.L@carelon.com', 'Nagaraj.Bendigeri@carelon.com', 'Karipe.SaiBharath@carelon.com', 'Vivek.Saxena@carelon.com', 'GirishKumar.Allada@carelon.com', 'Suhasini.Dillikar@carelon.com', 'Jeevan.KS@carelon.com', 'Kavitha.M@carelon.com', 'Vidhya.K.v@carelon.com', 'Gayathri.Sundar@carelon.com', 'KushalReddy.Sude@carelon.com', 'Yogesh.A@carelon.com', 'Venkatesh.C2@carelon.com', 'Rakshitha.Sangapal@carelon.com', 'Sweeti.Byagari@carelon.com', 'Tabarak.Khan@carelon.com', 'Akshitha.P@carelon.com', 'Venkatesh.Barlapati@carelon.com', 'ANILNAYAk.Korra@carelon.com', 'Shruthi.Ts2@carelon.com', 'Nirmala.K@carelon.com', 'Nithya.Anantha@carelon.com', 'Sujith.S@carelon.com', 'Harsha.BV@carelon.com', 'Bharath.Nakkala@carelon.com', 'Nithin.J@carelon.com', 'Prabhu.A@carelon.com', 'VinayKumar.Ks@carelon.com', 'Mohammed.Altaf@carelon.com', 'ManojKumar.BR@carelon.com', 'Shanaz.Banu@carelon.com'
+];
   const badge = document.getElementById("queryCount");
   if (!badge || !emailOptions.includes(userEmail)) return;
 
@@ -1799,7 +1851,5 @@ Resolved Comment: ${newComment}`;
 };
 
 </script>
-
 </body>
-
 </html>
